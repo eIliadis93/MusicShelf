@@ -2,6 +2,19 @@
 <div class="d-grid gap-2 col-6 mx-auto">
 <h1>Music Player</h1>
 
+<div class="list-group" (change)="selectTrack(soundtrack.filePath)">
+    <div class="col col-12 d-flex">
+    <button type="button" class="list-group-item list-group-item-action active" aria-current="true" *ngFor="let soundtrack of playList">
+        <span class="col-4">
+            {{soundtrack.name}}
+        </span>
+        <span class="col-4">
+            {{soundtrack.artist}}
+        </span>
+    </button>
+    </div>
+</div>
+
 <button class="btn btn-primary" (click)="play()">Play</button>
 <button class="btn btn-primary" (click)="pause()">Pause</button>
 <button class="btn btn-primary" (click)="stop()">Stop</button>
