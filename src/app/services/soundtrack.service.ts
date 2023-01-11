@@ -18,9 +18,9 @@ export class SoundtrackService {
   private authHeader(): HttpHeaders {
     return new HttpHeaders({
       Authorization: `Bearer ${this.oauthService.getAccessToken()}`,
-      "Acess-Control-Allow-Origin": "http://localhost:8080" 
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept" ,
     });
-    // .set('access-control-allow-origin',"http://localhost:8080/");
   }
 
   singleSoundtrack(name: string): Observable<any> {
