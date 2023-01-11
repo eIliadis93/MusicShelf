@@ -10,12 +10,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { MusicplayerComponent } from './components/musicplayer/musicplayer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
-import {MatTableModule} from '@angular/material/table';
-import {MatButtonModule} from '@angular/material/button';
-import {MatSliderModule} from '@angular/material/slider';
 import { KeycloakService } from 'keycloak-angular';
 
 @NgModule({
@@ -32,11 +26,6 @@ import { KeycloakService } from 'keycloak-angular';
     OAuthModule.forRoot(),
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatTableModule,
-    MatButtonModule,
-    MatSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]
