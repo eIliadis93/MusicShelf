@@ -1,5 +1,5 @@
 import { provideCloudinaryLoader } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Observable } from 'rxjs';
@@ -18,16 +18,19 @@ export class SoundtrackService {
   private authHeader(): HttpHeaders {
     return new HttpHeaders({
       Authorization: `Bearer ${this.oauthService.getAccessToken()}`,
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept" ,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers':
+        'Origin, X-Requested-With, Content-Type, Accept',
     });
   }
 
-  singleSoundtrack(name: string): Observable<any> {
-    return this.http.get<any>(
-      this.restUrl + '/api/soundtrack/findByName/' + name,
+  downloadSoundtrack(name: string): Observable<Blob> {
+    console.log(`${this.restUrl}/api/soundtrack/${name}`);
+    return this.http.get<Blob>(
+      `${this.restUrl}/api/soundtrack/${name}`,
       {
         headers: this.authHeader(),
+        reportProgress: true,
       }
     );
   }

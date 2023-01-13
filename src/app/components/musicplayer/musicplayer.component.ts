@@ -1,71 +1,55 @@
+import { HttpEvent } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Soundtrack } from 'src/app/models/soundtrack';
 import { SoundtrackService } from 'src/app/services/soundtrack.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-musicplayer',
   templateUrl: './musicplayer.component.html',
-  styleUrls: ['./musicplayer.component.scss']
+  styleUrls: ['./musicplayer.component.scss'],
 })
 export class MusicplayerComponent implements OnInit {
-
   audioObj = new Audio();
-  soundtrackName: string = "";
+  soundtrackName: string = '';
 
   soundtrack!: Soundtrack;
   playList!: Soundtrack[];
 
-  constructor(private soundtrackService: SoundtrackService, private oauthService: OAuthService){}
+  constructor(
+    private soundtrackService: SoundtrackService,
+    private oauthService: OAuthService
+  ) {}
 
   ngOnInit(): void {
     this.getPlaylist();
     console.log(this.token);
   }
 
-  getPlaylist(){
+  getPlaylist() {
     this.soundtrackService.getSongList().subscribe({
       next: (result) => {
         console.log(result);
         this.playList = result;
+      },
+    });
+  }
+
+  downloadSoundtrack(soundtrackName: string) {
+    this.soundtrackService.downloadSoundtrack(soundtrackName).subscribe(blob => {
+      if(blob.size === 0){
+        console.log("File is wrong");
       }
+      else{
+        saveAs(blob, soundtrackName);
+      }
+      
     })
   }
 
-  play(){
-    this.soundtrack.filePath = this.audioObj.src;
-    this.audioObj.load();
-    this.audioObj.play();
-    console.log("Play button");
-  }
-
-  pause(){
-    this.audioObj.pause()
-    console.log("Pause button");
-  }
-
-  stop(){
-    this.audioObj.pause();
-    this.audioObj.currentTime = 0;
-    console.log("Stop button");
-  }
-
-  openSoundtrack(filePath : string){
-    this.soundtrack.filePath = filePath;
-    console.log("File path: " + filePath);
-    this.audioObj.src = filePath;
-    this.audioObj.load();
-    this.audioObj.play();
-  }
-
-  
-  selectTrack(path: string){
-    this.soundtrack.filePath = path;
-  }
-
-
-  get token(){
+  get token() {
     let claims: any = this.oauthService.getIdentityClaims();
-    return claims ? claims:null;
+    return claims ? claims : null;
   }
 }
