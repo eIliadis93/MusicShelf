@@ -11,16 +11,24 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./musicplayer.component.scss'],
 })
 export class MusicplayerComponent implements OnInit {
-  audioObj = new Audio();
   soundtrackName: string = '';
 
-  soundtrack!: Soundtrack;
-  playList!: Soundtrack[];
+  soundtrack: Soundtrack;
+  playList: Soundtrack[] = [];
 
   constructor(
     private soundtrackService: SoundtrackService,
-    private oauthService: OAuthService
-  ) {}
+    private oauthService: OAuthService,
+  ) {
+    this.soundtrack = new Soundtrack(
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    );
+  }
 
   ngOnInit(): void {
     this.getPlaylist();
@@ -37,15 +45,23 @@ export class MusicplayerComponent implements OnInit {
   }
 
   downloadSoundtrack(soundtrackName: string) {
-    this.soundtrackService.downloadSoundtrack(soundtrackName).subscribe(blob => {
-      if(blob.size === 0){
-        console.log("File is wrong");
-      }
-      else{
-        saveAs(blob, soundtrackName);
-      }
-      
-    })
+    this.soundtrackService
+      .downloadSoundtrack(soundtrackName)
+      .subscribe((blob) => {
+        if (blob.size === 0) {
+          console.log('File is wrong');
+        } else {
+          saveAs(blob, soundtrackName);
+        }
+      });
+  }
+
+  playSound(filePath : string){
+    let audio = new Audio();
+    audio.src = encodeURIComponent(filePath);
+    audio.crossOrigin = 'anonymous';
+    audio.load();
+    audio.play();
   }
 
   get token() {

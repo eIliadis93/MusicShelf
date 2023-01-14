@@ -11,7 +11,7 @@
         aria-expanded="false"
         style="width: 18rem"
         aria-controls="musicListCollapse"
-        >Song name: {{ soundtrack.name }}</a
+        >{{ soundtrack.name }}</a
       >
       <div
         class="card collapse multi-collapse"
@@ -23,11 +23,9 @@
           <li class="list-group-item">Loyalty free music</li>
         </ul>
         <body>
-        <audio
-          controls
-          type="audio/mpeg"
-          class="d-grid gap-2 col col-12 mx-auto py-2 audiplay"
-        ></audio>
+          <button type="button" id="play" class="btn btn-success" (click)="playSound(soundtrack.filePath)">
+            Play
+          </button>
         </body>
         <button
           type="button"
