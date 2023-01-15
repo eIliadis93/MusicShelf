@@ -1,58 +1,74 @@
-<div class="container py-2">
-  <div class="d-grid gap-2 col-6 mx-auto">
-    <h1>Your Music List</h1>
+<div class="container py-2 d-flex col">
+  <div class="gap-2 mx-auto text-center row d-flex col-sm">
+    <h1 class="topText">Your Music List</h1>
+    <div
+      *ngFor="let soundtrack of playList"
+      class="card bg-dark col-lg"
+      style="width: 14rem"
+    >
+      <img
+        class="card-img-top"
+        src="https://static.vecteezy.com/system/resources/thumbnails/007/655/372/small/animation-earphones-neon-light-isolate-on-green-background-video.jpg"
+        alt="Card image cap"
+      />
+      <div class="card-body">
+        <h5 class="card-title text-success topText">{{ soundtrack.name }}</h5>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item bg-dark text-success">
+          Artist: {{ soundtrack.artist }} <br />
+          Loyalty Free Music
+        </li>
+      </ul>
+      <div class="card-body">
+        <div class="row">
+          <audio
+            controls
+            class="col-lg"
+            src="http://localhost:8080/api/soundtrack/stream/{{
+              soundtrack.name
+            }}"
+          ></audio>
 
-    <div *ngFor="let soundtrack of playList">
-      <a
-        class="btn btn-dark text-success"
-        data-bs-toggle="collapse"
-        href="#{{ soundtrack.id }}"
-        role="button"
-        aria-expanded="false"
-        style="width: 18rem"
-        aria-controls="musicListCollapse"
-        >{{ soundtrack.name }}</a
-      >
-      <div
-        class="card bg-dark collapse multi-collapse"
-        id="{{ soundtrack.id }}"
-        style="width: 18rem"
-      >
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item text-success bg-dark">
-            Artist: {{ soundtrack.artist }}
-          </li>
-          <li class="list-group-item text-success bg-dark">
-            Loyalty free music
-          </li>
-        </ul>
-        <audio
-          id="player"
-          src="http://localhost:8080/api/soundtrack/stream/{{
-            soundtrack.name
-          }}"
-        ></audio>
-        <div class="bg-sucess">
-          <button onclick="document.getElementById('player').play()">
-            Play
-          </button>
-          <button onclick="document.getElementById('player').pause()">
-            Pause
-          </button>
-          <button onclick="document.getElementById('player').volume += 0.1">
-            Vol +
-          </button>
-          <button onclick="document.getElementById('player').volume -= 0.1">
-            Vol -
+          <button
+            type="button"
+            class="btn btn-floating bg-success text-dark mt-2"
+            (click)="downloadSoundtrack(soundtrack.name)"
+          >
+            Download
           </button>
         </div>
-        <button
-          type="button"
-          class="btn btn-dark text-success"
-          (click)="downloadSoundtrack(soundtrack.name)"
-        >
-          Download
-        </button>
+      </div>
+    </div>
+    <div class="col-sm">
+      <button
+        class="btn btn-floating bg-dark text-success"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseExample"
+        aria-expanded="false"
+        aria-controls="collapseExample"
+      >
+        Upload Soundtrack
+      </button>
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body bg-dark text-success row">
+          <form #uploadForm="ngForm" (ngSubmit)="uploadSoundtrack(uploadForm.value)">
+            <div class="card-body">
+            <label>Type Artist Name</label>
+            <input type="text" name="artist" ngModel />
+            </div>
+            <div class="card-body">
+              <div class="col-sm">
+                 <label>Choose your Soundtrack (mp3)</label>
+              </div>
+              <div class="row">
+            <input type="file" name="soundtrack">
+            </div>
+            </div>
+            <input type="submit" class="btn btn-floating bg-success text-dark" value="Upload">
+          </form>
+        </div>
       </div>
     </div>
   </div>

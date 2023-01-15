@@ -1,17 +1,17 @@
-import { HttpEvent } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Soundtrack } from 'src/app/models/soundtrack';
 import { SoundtrackService } from 'src/app/services/soundtrack.service';
 import { saveAs } from 'file-saver';
 import { environment } from 'src/environments/environment';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-musicplayer',
   templateUrl: './musicplayer.component.html',
   styleUrls: ['./musicplayer.component.scss'],
 })
-export class MusicplayerComponent implements OnInit {
+export class MusicplayerComponent implements OnInit,OnChanges {
   soundtrackName: string = '';
   restUrl: string;
   soundtrack: Soundtrack;
@@ -29,6 +29,10 @@ export class MusicplayerComponent implements OnInit {
   ngOnInit(): void {
     this.getPlaylist();
     console.log(this.token);
+  }
+
+  ngOnChanges(){
+    this.getPlaylist();
   }
 
   getPlaylist() {
@@ -50,6 +54,10 @@ export class MusicplayerComponent implements OnInit {
           saveAs(blob, soundtrackName);
         }
       });
+  }
+
+  uploadSoundtrack(soundtrack: {artist: string, soundtrack: File}){
+
   }
 
   get token() {

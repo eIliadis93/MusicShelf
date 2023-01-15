@@ -41,11 +41,19 @@ export class SoundtrackService {
     });
   }
 
-  uploadSong(soundtrackDto: SoundtrackDto): Observable<any>{
+  uploadSong(soundtrackDto: SoundtrackDto, blob: Blob): Observable<any>{
     return this.http.post(this.restUrl + 'api/soundtrack', {
       header: {
-        
-      }
-    })
+        Authorization: `Bearer ${this.oauthService.getAccessToken()}`,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers':
+          'Origin, X-Requested-With, Content-Type, Accept',
+        'Content-Type': 'multipart/form-data',
+      },
+      body: {
+        'soundtrackDto': soundtrackDto,
+        'file': blob,
+      },
+    });
   }
 }
