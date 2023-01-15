@@ -4,6 +4,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { Soundtrack } from 'src/app/models/soundtrack';
 import { SoundtrackService } from 'src/app/services/soundtrack.service';
 import { saveAs } from 'file-saver';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-musicplayer',
@@ -12,22 +13,17 @@ import { saveAs } from 'file-saver';
 })
 export class MusicplayerComponent implements OnInit {
   soundtrackName: string = '';
-
+  restUrl: string;
   soundtrack: Soundtrack;
   playList: Soundtrack[] = [];
+  audio = new Audio();
 
   constructor(
     private soundtrackService: SoundtrackService,
-    private oauthService: OAuthService,
+    private oauthService: OAuthService
   ) {
-    this.soundtrack = new Soundtrack(
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    );
+    this.soundtrack = new Soundtrack('', '', '', '', '', '');
+    this.restUrl = environment.restUrl;
   }
 
   ngOnInit(): void {
@@ -54,14 +50,6 @@ export class MusicplayerComponent implements OnInit {
           saveAs(blob, soundtrackName);
         }
       });
-  }
-
-  playSound(filePath : string){
-    let audio = new Audio();
-    audio.src = encodeURIComponent(filePath);
-    audio.crossOrigin = 'anonymous';
-    audio.load();
-    audio.play();
   }
 
   get token() {

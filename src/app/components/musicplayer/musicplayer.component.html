@@ -1,10 +1,10 @@
 <div class="container py-2">
   <div class="d-grid gap-2 col-6 mx-auto">
-    <h1>Music Player</h1>
+    <h1>Your Music List</h1>
 
     <div *ngFor="let soundtrack of playList">
       <a
-        class="btn btn-success"
+        class="btn btn-dark text-success"
         data-bs-toggle="collapse"
         href="#{{ soundtrack.id }}"
         role="button"
@@ -14,22 +14,41 @@
         >{{ soundtrack.name }}</a
       >
       <div
-        class="card collapse multi-collapse"
+        class="card bg-dark collapse multi-collapse"
         id="{{ soundtrack.id }}"
         style="width: 18rem"
       >
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">Artist: {{ soundtrack.artist }}</li>
-          <li class="list-group-item">Loyalty free music</li>
+          <li class="list-group-item text-success bg-dark">
+            Artist: {{ soundtrack.artist }}
+          </li>
+          <li class="list-group-item text-success bg-dark">
+            Loyalty free music
+          </li>
         </ul>
-        <body>
-          <button type="button" id="play" class="btn btn-success" (click)="playSound(soundtrack.filePath)">
+        <audio
+          id="player"
+          src="http://localhost:8080/api/soundtrack/stream/{{
+            soundtrack.name
+          }}"
+        ></audio>
+        <div class="bg-sucess">
+          <button onclick="document.getElementById('player').play()">
             Play
           </button>
-        </body>
+          <button onclick="document.getElementById('player').pause()">
+            Pause
+          </button>
+          <button onclick="document.getElementById('player').volume += 0.1">
+            Vol +
+          </button>
+          <button onclick="document.getElementById('player').volume -= 0.1">
+            Vol -
+          </button>
+        </div>
         <button
           type="button"
-          class="btn btn-success"
+          class="btn btn-dark text-success"
           (click)="downloadSoundtrack(soundtrack.name)"
         >
           Download
