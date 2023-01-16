@@ -1,9 +1,9 @@
-<div class="container py-2 d-flex col col-12">
-  <div class="gap-2 mx-auto text-center row d-flex">
+<div class="container py-2 d-flex">
+  <div class="gap-2 mx-auto text-center d-flex row">
     <h1 class="topText">Your Music List</h1>
     <div
       *ngFor="let soundtrack of playList"
-      class="card bg-dark col-lg"
+      class="card bg-dark col-auto"
       style="width: 14rem"
     >
       <img
@@ -11,24 +11,24 @@
         src="https://static.vecteezy.com/system/resources/thumbnails/007/655/372/small/animation-earphones-neon-light-isolate-on-green-background-video.jpg"
         alt="Card image cap"
       />
-      <div class="card-body">
+      <div class="card-body row">
         <h5 class="card-title text-success topText">{{ soundtrack.name }}</h5>
       </div>
-      <ul class="list-group list-group-flush">
+      <ul class="list-group list-group-flush col">
         <li class="list-group-item bg-dark text-success">
           Loyalty Free Music
         </li>
       </ul>
-      <div class="card-body">
-        <div class="row">
+      <div class="card-body cardAudio d-flex">
           <audio
             controls
-            class="d-flex"
             src="http://localhost:8080/api/soundtrack/stream/{{
               soundtrack.name
             }}"
           ></audio>
-
+          
+      </div>
+       <div class="">
           <button
             type="button"
             class="btn btn-floating bg-success text-dark mt-2"
@@ -36,10 +36,10 @@
           >
             Download
           </button>
-        </div>
       </div>
     </div>
-    <div class="col-sm">
+        </div>
+    <div class="col">
       <button
         class="btn btn-floating bg-dark text-success"
         type="button"
@@ -52,19 +52,36 @@
       </button>
       <div class="collapse" id="collapseExample">
         <div class="card card-body bg-dark text-success row">
-          <form #uploadForm="ngForm" (ngSubmit)="uploadSoundtrack(uploadForm.value)">
-            <div class="card-body">
-              <div class="col-sm">
-                 <label>Choose your Soundtrack (mp3)</label>
-              </div>
-              <div class="row">
-            <input type="file" name="soundtrack" ngModel>
-            </div>
-            </div>
-            <input type="submit" class="btn btn-floating bg-success text-dark" value="Upload">
-          </form>
+          <div class="row">
+  <div class="col-8">
+    <label class="btn btn-default p-0">
+      <input type="file" (change)="selectFile($event)" />
+    </label>
+  </div>
+
+  <div class="col-4">
+    <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="uploadSoundtrack()">
+      Upload
+    </button>
+  </div>
+</div>
+
+<div *ngIf="currentFile" class="progress my-3">
+  <div
+    class="progress-bar progress-bar-info progress-bar-striped"
+    role="progressbar"
+    attr.aria-valuenow="{{ progress }}"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    [ngStyle]="{ width: progress + '%' }"
+  >
+    {{ progress }}%
+  </div>
+</div>
+
+<div *ngIf="message" class="alert alert-secondary" role="alert">{{ message }}</div>
         </div>
       </div>
-    </div>
+
   </div>
 </div>

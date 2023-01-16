@@ -29,7 +29,7 @@ export class SoundtrackService {
       'Access-Control-Allow-Headers':
         'Origin, X-Requested-With, Content-Type, Accept',
       ContentType: 'application/json',
-      'Content-Type': 'multipartFile/form-data'
+      'Content-Type': 'multipartFile/form-data',
     });
   }
 
@@ -48,11 +48,18 @@ export class SoundtrackService {
     });
   }
 
-  uploadSong(formData: FormData): Observable<any> {
-    return this.http.post<HttpEvent<{}>>(this.restUrl + '/api/soundtrack', formData, {
-      headers: this.authHeader(),
-      reportProgress: true,
-      responseType: 'blob' as 'json',
-    });
+  uploadSong(file: File): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    const req = new HttpRequest(
+      'POST',
+      `${this.restUrl}/api/soundtrack`,
+      formData,
+      {
+        reportProgress: true,
+        responseType: 'json',
+      }
+    );
+    return this.http.request(req);
   }
 }
