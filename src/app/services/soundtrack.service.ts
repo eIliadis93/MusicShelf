@@ -1,5 +1,10 @@
 import { provideCloudinaryLoader } from '@angular/common';
-import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpHeaders,
+  HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { map, Observable, switchMap } from 'rxjs';
@@ -23,6 +28,8 @@ export class SoundtrackService {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers':
         'Origin, X-Requested-With, Content-Type, Accept',
+      ContentType: 'application/json',
+      'Content-Type': 'multipartFile/form-data'
     });
   }
 
@@ -41,19 +48,11 @@ export class SoundtrackService {
     });
   }
 
-  uploadSong(soundtrackDto: SoundtrackDto, blob: Blob): Observable<any>{
-    return this.http.post(this.restUrl + 'api/soundtrack', {
-      header: {
-        Authorization: `Bearer ${this.oauthService.getAccessToken()}`,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers':
-          'Origin, X-Requested-With, Content-Type, Accept',
-        'Content-Type': 'multipart/form-data',
-      },
-      body: {
-        'soundtrackDto': soundtrackDto,
-        'file': blob,
-      },
+  uploadSong(formData: FormData): Observable<any> {
+    return this.http.post<HttpEvent<{}>>(this.restUrl + '/api/soundtrack', formData, {
+      headers: this.authHeader(),
+      reportProgress: true,
+      responseType: 'blob' as 'json',
     });
   }
 }

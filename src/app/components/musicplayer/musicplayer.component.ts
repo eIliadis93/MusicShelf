@@ -5,13 +5,14 @@ import { SoundtrackService } from 'src/app/services/soundtrack.service';
 import { saveAs } from 'file-saver';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
+import { SoundtrackDto } from 'src/app/models/soundtrackDto';
 
 @Component({
   selector: 'app-musicplayer',
   templateUrl: './musicplayer.component.html',
   styleUrls: ['./musicplayer.component.scss'],
 })
-export class MusicplayerComponent implements OnInit,OnChanges {
+export class MusicplayerComponent implements OnInit, OnChanges {
   soundtrackName: string = '';
   restUrl: string;
   soundtrack: Soundtrack;
@@ -31,7 +32,7 @@ export class MusicplayerComponent implements OnInit,OnChanges {
     console.log(this.token);
   }
 
-  ngOnChanges(){
+  ngOnChanges() {
     this.getPlaylist();
   }
 
@@ -56,8 +57,14 @@ export class MusicplayerComponent implements OnInit,OnChanges {
       });
   }
 
-  uploadSoundtrack(soundtrack: {artist: string, soundtrack: File}){
-
+  async uploadSoundtrack(soundtrack: File) {
+    const formData = new FormData();
+    formData.append('file', soundtrack);
+    formData.append('multipartFile', '');
+    console.log(soundtrack);
+    this.soundtrackService.uploadSong(formData).subscribe((res) => {
+      console.log(res);
+    });
   }
 
   get token() {
